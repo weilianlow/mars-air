@@ -1,5 +1,4 @@
 import unittest
-from collections import namedtuple
 from requests import post, Session
 from bs4 import BeautifulSoup
 
