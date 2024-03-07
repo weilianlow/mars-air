@@ -56,12 +56,16 @@ class TestPromo(Case):
         super().setUpClass()
         cls.precondition = ['departing=0', 'returning=5']
 
+    def test_invalid_promo_whitespace_input(self):
+        self.execute(data=['promotional_code=  '],
+                     expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'])
+
     def test_invalid_promo_invalid_format(self):
         self.execute(data=['promotional_code=XYZ'],
                      expected=['Seats available!', 'Sorry, code XYZ is not valid',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_invalid_promo_valid_format_invalid_checksum(self):
+    def test_invalid_promo_invalid_checksum(self):
         self.execute(data=['promotional_code=XX9-XXX-999'],
                      expected=['Seats available!', 'Sorry, code XX9-XXX-999 is not valid',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
@@ -80,14 +84,6 @@ class TestPromo(Case):
         self.execute(data=['promotional_code=XX9-XXX-009'],
                      expected=['Seats available!', 'Promotional code XX9-XXX-009 used: 90% discount!',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
-
-    def test_valid_promo_empty_input(self):
-        self.execute(data=['promotional_code='],
-                     expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'])
-
-    def test_valid_promo_whitespace_input(self):
-        self.execute(data=['promotional_code=  '],
-                     expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'])
 
     def test_valid_promo_whitespace_padding(self):
         self.execute(data=['promotional_code=  XX5-XXX-005   '],

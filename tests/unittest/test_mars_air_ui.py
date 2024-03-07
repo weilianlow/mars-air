@@ -30,12 +30,16 @@ class TestReturnToHome(Case):
 
     def test_return_to_home_via_back_hyperlink(self):
         self.home.search("July", "December (two years from now)", None)
-        assert self.home.search_title.text_content() == "Search Results"
+        self.assertEqual("Search Results", self.home.search_title.text_content())
         self.home.back_link.click()
-        assert self.home.search_title.text_content() == "Welcome to MarsAir!"
+        self.assertEqual("Welcome to MarsAir!", self.home.search_title.text_content())
+        self.assertEqual("Book a ticket to the red planet now!",
+                         self.home.book_ticket_red_planet_title.text_content())
 
     def test_return_to_home_via_home_hyperlink(self):
         self.home.search("July", "December (two years from now)", None)
-        assert self.home.search_title.text_content() == "Search Results"
+        self.assertEqual("Search Results", self.home.search_title.text_content())
         self.home.home_link.click()
-        assert self.home.search_title.text_content() == "Welcome to MarsAir!"
+        self.assertEqual("Welcome to MarsAir!", self.home.search_title.text_content())
+        self.assertEqual("Book a ticket to the red planet now!",
+                         self.home.book_ticket_red_planet_title.text_content())

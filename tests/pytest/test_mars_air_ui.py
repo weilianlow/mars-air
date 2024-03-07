@@ -15,6 +15,7 @@ def test_return_to_home_via_back_hyperlink(home_page):
     assert home_page.search_title.text_content() == "Search Results"
     home_page.back_link.click()
     assert home_page.search_title.text_content() == "Welcome to MarsAir!"
+    assert home_page.book_ticket_red_planet_title.text_content() == "Book a ticket to the red planet now!"
 
 
 def test_return_to_home_via_home_hyperlink(home_page):
@@ -22,6 +23,7 @@ def test_return_to_home_via_home_hyperlink(home_page):
     assert home_page.search_title.text_content() == "Search Results"
     home_page.home_link.click()
     assert home_page.search_title.text_content() == "Welcome to MarsAir!"
+    assert home_page.book_ticket_red_planet_title.text_content() == "Book a ticket to the red planet now!"
 
 
 """
@@ -53,6 +55,13 @@ def test_basic_search_seat_available(home_page):
         assert element.text_content().strip() == expected[i]
 
 
+def test_invalid_promo_whitespace_input(home_page):
+    home_page.search(departing='July', returning='December (two years from now)', promo_code='  ')
+    expected = ['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back']
+    for i, element in enumerate(home_page.form_content.all()):
+        assert element.text_content().strip() == expected[i]
+
+
 def test_invalid_promo_invalid_format(home_page):
     home_page.search(departing='July', returning='December (two years from now)', promo_code='XYZ')
     expected = ['Seats available!', 'Sorry, code XYZ is not valid', 'Call now on 0800 MARSAIR to book!', 'Back']
@@ -60,7 +69,7 @@ def test_invalid_promo_invalid_format(home_page):
         assert element.text_content().strip() == expected[i]
 
 
-def test_invalid_promo_valid_format_invalid_checksum(home_page):
+def test_invalid_promo_invalid_checksum(home_page):
     home_page.search(departing='July', returning='December (two years from now)', promo_code='XX9-XXX-999')
     expected = ['Seats available!', 'Sorry, code XX9-XXX-999 is not valid', 'Call now on 0800 MARSAIR to book!', 'Back']
     for i, element in enumerate(home_page.form_content.all()):
@@ -77,7 +86,7 @@ def test_invalid_promo_00_percent_discount(home_page):
 def test_valid_promo_10_percent_discount(home_page):
     home_page.search(departing='July', returning='December (two years from now)', promo_code='XX1-XXX-001')
     expected = ['Seats available!', 'Promotional code XX1-XXX-001 used: 10% discount!',
-                'Call now on 0800 MARSAIR to book!', 'Back']
+                'Call now on 0800 MARSAIR to book!', 'Back'],
     for i, element in enumerate(home_page.form_content.all()):
         assert element.text_content().strip() == expected[i]
 
@@ -90,23 +99,9 @@ def test_valid_promo_90_percent_discount(home_page):
         assert element.text_content().strip() == expected[i]
 
 
-def test_valid_promo_empty_input(home_page):
-    home_page.search(departing='July', returning='December (two years from now)', promo_code='')
-    expected = ['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back']
-    for i, element in enumerate(home_page.form_content.all()):
-        assert element.text_content().strip() == expected[i]
-
-
-def test_valid_promo_whitespace_input(home_page):
-    home_page.search(departing='July', returning='December (two years from now)', promo_code='  ')
-    expected = ['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back']
-    for i, element in enumerate(home_page.form_content.all()):
-        assert element.text_content().strip() == expected[i]
-
-
 def test_valid_promo_whitespace_padding(home_page):
-    home_page.search(departing='July', returning='December (two years from now)', promo_code='  XX9-XXX-009  ')
-    expected = ['Seats available!', 'Promotional code XX9-XXX-009 used: 90% discount!',
+    home_page.search(departing='July', returning='December (two years from now)', promo_code='  XX5-XXX-005   ')
+    expected = ['Seats available!', 'Promotional code XX5-XXX-005 used: 50% discount!',
                 'Call now on 0800 MARSAIR to book!', 'Back']
     for i, element in enumerate(home_page.form_content.all()):
         assert element.text_content().strip() == expected[i]

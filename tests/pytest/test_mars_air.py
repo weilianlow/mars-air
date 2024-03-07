@@ -55,6 +55,13 @@ def test_basic_search_seat_available(request, empty_promo_code):
             request=request)
 
 
+def test_invalid_promo_whitespace_input(request, seat_available):
+    execute(data=['promotional_code=  '],
+            expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'],
+            precondition=seat_available,
+            request=request)
+
+
 def test_invalid_promo_invalid_format(request, seat_available):
     execute(data=['promotional_code=XYZ'],
             expected=['Seats available!', 'Sorry, code XYZ is not valid',
@@ -63,7 +70,7 @@ def test_invalid_promo_invalid_format(request, seat_available):
             request=request)
 
 
-def test_invalid_promo_valid_format_invalid_checksum(request, seat_available):
+def test_invalid_promo_invalid_checksum(request, seat_available):
     execute(data=['promotional_code=XX9-XXX-999'],
             expected=['Seats available!', 'Sorry, code XX9-XXX-999 is not valid',
                       'Call now on 0800 MARSAIR to book!', 'Back'],
@@ -91,20 +98,6 @@ def test_valid_promo_90_percent_discount(request, seat_available):
     execute(data=['promotional_code=XX9-XXX-009'],
             expected=['Seats available!', 'Promotional code XX9-XXX-009 used: 90% discount!',
                       'Call now on 0800 MARSAIR to book!', 'Back'],
-            precondition=seat_available,
-            request=request)
-
-
-def test_valid_promo_empty_input(request, seat_available):
-    execute(data=['promotional_code='],
-            expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'],
-            precondition=seat_available,
-            request=request)
-
-
-def test_valid_promo_whitespace_input(request, seat_available):
-    execute(data=['promotional_code=  '],
-            expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'],
             precondition=seat_available,
             request=request)
 

@@ -10,6 +10,7 @@ class Home:
         self.search_button = page.locator('//input[@value="Search"]')
         self.home_link = page.locator('//a[contains(text(),"MarsAir")]')
         self.back_link = page.locator('//a[contains(text(),"Back")]')
+        self.book_ticket_red_planet_title = page.locator('//div[@id="content"]//h3')
         self.search_title = page.locator('//div[@id="content"]/h2')
         self.form_content = page.locator('//div[@id="content"]/p')
 
