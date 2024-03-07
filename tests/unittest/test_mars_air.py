@@ -1,5 +1,5 @@
 import unittest
-from requests import post, Session
+from requests import Session
 from bs4 import BeautifulSoup
 
 
@@ -17,7 +17,7 @@ class Case(unittest.TestCase):
         if precondition:
             data.extend(precondition)
         # act
-        response = post(self.url, data='&'.join([v for v in data]))
+        response = self.session.post(self.url, data='&'.join([v for v in data]))
         soup = BeautifulSoup(response.text, features='html.parser')
         # assert
         self.assertEqual(200, response.status_code)
@@ -30,6 +30,7 @@ class Case(unittest.TestCase):
 class TestMarsAirMandateFields(Case):
     @classmethod
     def setUpClass(cls):
+        super().setUpClass()
         cls.precondition = ['promotional_code=']
 
     def test_without_departing_without_returning(self):
@@ -48,6 +49,7 @@ class TestMarsAirMandateFields(Case):
 class TestMarsAirBookWithoutPromoCode(Case):
     @classmethod
     def setUpClass(cls):
+        super().setUpClass()
         cls.precondition = ['promotional_code=']
 
     def test_returning_earlier_than_departing(self):
@@ -62,11 +64,11 @@ class TestMarsAirBookWithoutPromoCode(Case):
         self.execute(data=['departing=0', 'returning=1'],
                      expected=['Unfortunately, this schedule is not possible. Please try again.', 'Back'])
 
-    def test_returning_more_than_1year_AND_seat_unavailable(self):
+    def test_returning_more_than_1year_and_seat_unavailable(self):
         self.execute(data=['departing=0', 'returning=3'],
                      expected=['Sorry, there are no more seats available.', 'Back'])
 
-    def test_returning_more_than_1year_AND_seat_available(self):
+    def test_returning_more_than_1year_and_seat_available(self):
         self.execute(data=['departing=0', 'returning=5'],
                      expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'])
 
@@ -74,6 +76,7 @@ class TestMarsAirBookWithoutPromoCode(Case):
 class TestMarsAirBookWithPromoCode(Case):
     @classmethod
     def setUpClass(cls):
+        super().setUpClass()
         cls.precondition = ['departing=0', 'returning=5']
 
     def test_empty_promo(self):
@@ -84,32 +87,32 @@ class TestMarsAirBookWithPromoCode(Case):
         self.execute(data=['promotional_code=  '],
                      expected=['Seats available!', 'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_correct_format_AND_wrong_checksum(self):
+    def test_correct_format_and_wrong_checksum(self):
         self.execute(data=['promotional_code=XX9-XXX-999'],
                      expected=['Seats available!', 'Sorry, code XX9-XXX-999 is not valid',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_valid_promo_AND_00_percent_discount(self):
+    def test_valid_promo_and_00_percent_discount(self):
         self.execute(data=['promotional_code=XX0-XXX-000'],
                      expected=['Seats available!', 'Sorry, code XX0-XXX-000 is not valid',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_valid_promo_AND_50_percent_discount(self):
+    def test_valid_promo_and_50_percent_discount(self):
         self.execute(data=['promotional_code=XX5-XXX-005'],
                      expected=['Seats available!', 'Promotional code XX5-XXX-005 used: 50% discount!',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_valid_promo_AND_50_percent_discount_AND_left_whitespace(self):
+    def test_valid_promo_and_50_percent_discount_and_left_whitespace(self):
         self.execute(data=['promotional_code=  XX5-XXX-005'],
                      expected=['Seats available!', 'Promotional code XX5-XXX-005 used: 50% discount!',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_valid_promo_AND_50_percent_discount_AND_right_whitespace(self):
+    def test_valid_promo_and_50_percent_discount_and_right_whitespace(self):
         self.execute(data=['promotional_code=XX5-XXX-005  '],
                      expected=['Seats available!', 'Promotional code XX5-XXX-005 used: 50% discount!',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
 
-    def test_valid_promo_AND_50_percent_discount_AND_left_right_whitespace(self):
+    def test_valid_promo_and_50_percent_discount_and_left_right_whitespace(self):
         self.execute(data=['promotional_code=  XX5-XXX-005   '],
                      expected=['Seats available!', 'Promotional code XX5-XXX-005 used: 50% discount!',
                                'Call now on 0800 MARSAIR to book!', 'Back'])
