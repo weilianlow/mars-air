@@ -1,14 +1,5 @@
 import pytest
-from requests import Session
 from bs4 import BeautifulSoup
-
-
-@pytest.fixture(autouse=True, scope='module')
-def session():
-    url = 'https://marsair.recruiting.thoughtworks.net/WeiLianLow'
-    s = Session()
-    s.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
-    return s, url
 
 
 @pytest.fixture(scope='module')
@@ -65,7 +56,7 @@ def test_returning_earlier_than_departing(request, empty_promo_code):
 
 
 def test_returning_same_as_departing(request, empty_promo_code):
-    execute(data=['departing=5', 'returning=0'],
+    execute(data=['departing=0', 'returning=0'],
             expected=['Returning date cannot be earlier or same as departing.', 'Back'],
             precondition=empty_promo_code,
             request=request)

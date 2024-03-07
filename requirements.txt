@@ -1,5 +1,7 @@
 beautifulsoup4==4.12.3
 requests==2.31.0
 pytest==8.0.2
+pytest-xdist==3.5.0
 unittest-xml-reporting==3.2.0
 allure-pytest==2.13.2
+playwright==1.42.0

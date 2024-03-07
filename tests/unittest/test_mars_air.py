@@ -57,7 +57,7 @@ class TestMarsAirBookWithoutPromoCode(Case):
                      expected=['Returning date cannot be earlier or same as departing.', 'Back'])
 
     def test_returning_same_as_departing(self):
-        self.execute(data=['departing=5', 'returning=0'],
+        self.execute(data=['departing=0', 'returning=0'],
                      expected=['Returning date cannot be earlier or same as departing.', 'Back'])
 
     def test_returning_less_than_1year(self):
