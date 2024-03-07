@@ -1,3 +1,3 @@
-rm -rf unittest-results
+rm -rf test-result/unittest
 python -m unittest_runner
-allure serve unittest-results
+allure serve test-result/unittest

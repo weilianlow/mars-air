@@ -1,3 +1,3 @@
-rm -rf pytest-results
-pytest -n 5 --alluredir pytest-results
-allure serve pytest-results
+rm -rf test-result/pytest
+pytest -n 5 --alluredir test-result/pytest
+allure serve test-result/pytest

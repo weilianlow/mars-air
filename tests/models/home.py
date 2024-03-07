@@ -8,6 +8,7 @@ class Home:
         self.returning_select = page.locator('//select[@id="returning"]')
         self.promo_code_text = page.locator('//input[@id="promotional_code"]')
         self.search_button = page.locator('//input[@value="Search"]')
+        self.home_link = page.locator('//a[contains(text(),"MarsAir")]')
         self.back_link = page.locator('//a[contains(text(),"Back")]')
         self.search_title = page.locator('//div[@id="content"]/h2')
         self.form_content = page.locator('//div[@id="content"]/p')
