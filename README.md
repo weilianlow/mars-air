@@ -4,7 +4,7 @@ This project entails automating the functionality test of MarsAir using Python, 
 ### Unittest framework
 I prefer pytest over unittest due to its minimal code requirements and ability to achieve the same results. Additionally, pytest boasts an extensive plugin ecosystem, including 200+ plugins. We utilize pytest-xdist with up to 5 workers to accelerate test execution.
 
-### Test Pyramid
+### Test Level (API/UI)
 API testing is prioritized over UI testing due to its higher return on investment, faster execution, and greater resilience compared to UI testing. The Basic search flow, promotional codes, and Invalid return date stories are tested via API testing, while the Link to home page story is tested via UI testing.
 
 ## Setup
